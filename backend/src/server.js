@@ -22,6 +22,3 @@ app.get("/", (req, res) => {
         message: "Running"
     })
 })
-
-// mongodb+srv://tejasangadi456:53rKFMPXsFdTYSqu@cluster0.pqjuxx7.mongodb.net/
-// 53rKFMPXsFdTYSqu
