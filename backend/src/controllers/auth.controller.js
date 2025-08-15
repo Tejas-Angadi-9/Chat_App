@@ -113,7 +113,7 @@ export const login = async (req, res) => {
     }
 }
 
-export const logout = (req, res) => {
+export const logout = async (req, res) => {
     try {
         res.clearCookie("token")
 
@@ -129,4 +129,8 @@ export const logout = (req, res) => {
             data: "Internal server while logging out."
         })
     }
+}
+
+export const updateProfile = async (req, res) => {
+    
 }
