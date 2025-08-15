@@ -1,3 +1,4 @@
+import { generateToken } from "../libs/utils.js";
 import User from "../models/user.model.js"
 import bcrypt, { hash } from "bcryptjs";
 
@@ -38,8 +39,16 @@ export const signup = async (req, res) => {
             password: hashedPassword
         })
 
-        if (newUser) {
 
+        const { password: _password, ...userWithoutPassword } = newUser.toObject();
+        if (newUser) {
+             \generateToken(newUser._id, res);
+            await newUser.save();
+            res.status(201).json({
+                success: true,
+                message: "User created Successfully!",
+                data: userWithoutPassword
+            })
         }
         else {
             res.status(400).json({
@@ -49,9 +58,12 @@ export const signup = async (req, res) => {
         }
     }
     catch (error) {
-
+        res.status(500).json({
+            success: false,
+            message: error.message,
+            data: "Internal server while creating a new user"
+        })
     }
-
 }
 
 export const login = (req, res) => {
