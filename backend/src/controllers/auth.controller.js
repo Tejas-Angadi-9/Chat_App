@@ -95,9 +95,7 @@ export const login = async (req, res) => {
             })
         }
 
-        const token = generateToken(user._id, res);
-        console.log("TOKEN: ", token)
-
+        await generateToken(user._id, res);
         const { password: _password, createdAt, updatedAt, ...userWithoutPassword } = user.toObject();
         res.status(200).json({
             success: true,
