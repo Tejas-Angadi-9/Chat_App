@@ -1,3 +1,4 @@
+import cloudinary from "../libs/cloudinary.js";
 import { generateToken } from "../libs/utils.js";
 import User from "../models/user.model.js"
 import bcrypt, { hash } from "bcryptjs";
@@ -132,5 +133,49 @@ export const logout = async (req, res) => {
 }
 
 export const updateProfile = async (req, res) => {
-    
+    try {
+        const { profilePic } = req.body;
+        if (!profilePic) {
+            return res.status(400).json({
+                success: false,
+                message: "Profile pic is required."
+            })
+        }
+        const userId = req.user._id;
+
+        const uploadResponse = await cloudinary.uploader.upload(profilePic, {
+            folder: "Chat-App"
+        });
+        const updatedUser = await User.findByIdAndUpdate(userId, { profilePic: uploadResponse.secure_url }, { new: true }).select("-password");
+        res.status(200).json({
+            success: true,
+            message: "Successfully updated the user's profile pic.",
+            data: updatedUser
+        })
+    }
+    catch (err) {
+        res.status(500).json({
+            success: false,
+            message: err.message,
+            data: "Internal server error while updating the profile pic."
+        })
+    }
+}
+
+export const checkAuth = async (req, res) => {
+    try {
+        res.status(200).json({
+            success: true,
+            message: "User is authenticated and authorized",
+            data: req.user
+        })
+    }
+    catch (error) {
+        console.error("Error in check auth controller: ", error.message);
+        res.status(500).json({
+            success: false,
+            message: err.message,
+            data: "Internal server error while checking the authication and authorization access for the user"
+        })
+    }
 }

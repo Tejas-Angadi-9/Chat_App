@@ -12,8 +12,7 @@ export const protectRoute = async (req, res, next) => {
             })
         }
 
-        // const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
-        const decodedToken = jwt.decode(token, process.env.JWT_SECRET);
+        const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
         if (!decodedToken) {
             return res.status(401).json({
                 success: false,
@@ -35,7 +34,7 @@ export const protectRoute = async (req, res, next) => {
     catch (error) {
         res.status(500).json({
             success: false,
-            message: err.message,
+            message: error.message,
             data: "Internal server error while updating the profile Pic."
         })
     }
