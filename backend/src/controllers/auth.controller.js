@@ -43,7 +43,7 @@ export const signup = async (req, res) => {
 
         const { password: _password, ...userWithoutPassword } = newUser.toObject();
         if (newUser) {
-            generateToken(newUser._id, res);
+            // generateToken(newUser._id, res);
             await newUser.save();
             res.status(201).json({
                 success: true,
