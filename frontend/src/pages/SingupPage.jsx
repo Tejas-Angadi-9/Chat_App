@@ -9,11 +9,12 @@ import {
   MessageSquare,
   User,
 } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import AuthImagePattern from "../components/AuthImagePattern.jsx";
 import toast from "react-hot-toast";
 
 const SingupPage = () => {
+  const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
     fullName: "",
@@ -33,10 +34,10 @@ const SingupPage = () => {
 
     return true;
   };
-  const submitFormHandler = (e) => {
+  const submitFormHandler = async (e) => {
     e.preventDefault();
     const isFormValid = validateFormHandler();
-    if (isFormValid === true) signup(formData);
+    if (isFormValid === true) await signup(formData, navigate);
   };
 
   return (
@@ -140,21 +141,22 @@ const SingupPage = () => {
                 </button>
               </div>
             </div>
+            <button
+              type="submit"
+              onClick={submitFormHandler}
+              className="btn btn-primary w-full"
+              disabled={isSigningup}>
+              {isSigningup ? (
+                <>
+                  <Loader2 className="size-5 animate-spin" />
+                  Loading...
+                </>
+              ) : (
+                "Create Account"
+              )}
+            </button>
           </form>
-          <button
-            type="submit"
-            onClick={submitFormHandler}
-            className="btn btn-primary w-full"
-            disabled={isSigningup}>
-            {isSigningup ? (
-              <>
-                <Loader2 className="size-5 animate-spin" />
-                Loading...
-              </>
-            ) : (
-              "Create Account"
-            )}
-          </button>
+
           <div className="text-center">
             <p className="text-base-content/60">
               Already have an account?{" "}
