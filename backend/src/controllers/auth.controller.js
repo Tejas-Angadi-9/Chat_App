@@ -43,7 +43,6 @@ export const signup = async (req, res) => {
 
         const { password: _password, ...userWithoutPassword } = newUser.toObject();
         if (newUser) {
-            // generateToken(newUser._id, res);
             await newUser.save();
             res.status(201).json({
                 success: true,
@@ -121,7 +120,7 @@ export const logout = async (req, res) => {
             message: "Logged out successfully!"
         })
     }
-    catch (err) {
+    catch (error) {
         res.status(500).json({
             success: false,
             message: error.message,
@@ -139,6 +138,9 @@ export const updateProfile = async (req, res) => {
                 message: "Profile pic is required."
             })
         }
+        // if (!req.file) {
+        //     return res.status(400).json({ success: false, message: "Profile pic is required." });
+        // }
         const userId = req.user._id;
 
         const uploadResponse = await cloudinary.uploader.upload(profilePic, {
