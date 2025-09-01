@@ -10,6 +10,7 @@ export const useAuthStore = create((set) => ({
     isLoggingOut: false,
     isCheckingAuth: true,    // This helps in loading - initially it's set to true
     profilePicResponse: null,
+    onlineUsers: []
 
     checkAuth: async () => {
         try {
